@@ -1,22 +1,22 @@
 const router = require('express').Router();
 
 const {
-  getCards,
-  createCard,
-  deleteCard,
-  likeCard,
-  deleteLikeCard,
+  getInitialCards,
+  addNewCard,
+  removeCard,
+  addLike,
+  removeLike,
 } = require('../controllers/cards');
 
-// Находим все карточки:
-router.get('/', getCards);
-// Создаем карточку:
-router.post('/', createCard);
-// Удаляем карточку:
-router.delete('/:cardId', deleteCard);
-// Ставим лайк на карточку:
-router.put('/:cardId/likes', likeCard);
-// Убираем лайк с карточки:
-router.delete('/:cardId/likes', deleteLikeCard);
+// Все карточки:
+router.get('/', getInitialCards);
+// Создание новой карточки:
+router.post('/', addNewCard);
+// Удаление карточки:
+router.delete('/:cardId', removeCard);
+// Лайк на карточки:
+router.put('/:cardId/likes', addLike);
+// Удаление лайка с карточки:
+router.delete('/:cardId/likes', removeLike);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 
-// Находим все карточки:
-module.exports.getCards = (req, res) => {
+// Все карточки:
+module.exports.getInitialCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
     .catch(() => res
@@ -9,8 +9,8 @@ module.exports.getCards = (req, res) => {
       .send({ message: 'Произошла ошибка при запросе всех карточек' }));
 };
 
-// Создаем карточку:
-module.exports.createCard = (req, res) => {
+// Создание новой карточки:
+module.exports.addNewCard = (req, res) => {
   console.log(req.user._id);
   const { name, link } = req.body;
   const owner = req.user._id;
@@ -27,8 +27,8 @@ module.exports.createCard = (req, res) => {
     });
 };
 
-// Удаляем карточку:
-module.exports.deleteCard = (req, res) => {
+// Удаление карточки:
+module.exports.removeCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
@@ -49,8 +49,8 @@ module.exports.deleteCard = (req, res) => {
     });
 };
 
-// Ставим лайк на карточку:
-module.exports.likeCard = (req, res) => {
+// Лайк на карточки:
+module.exports.addLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -74,8 +74,8 @@ module.exports.likeCard = (req, res) => {
     });
 };
 
-// Убираем лайк с карточки:
-module.exports.deleteLikeCard = (req, res) => {
+// Удаление лайка с карточки:
+module.exports.removeLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },

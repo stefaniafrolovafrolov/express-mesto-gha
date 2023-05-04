@@ -4,19 +4,19 @@ const {
   getUsers,
   getUserId,
   createUser,
-  updateUserProfile,
-  updateUserAvatar,
+  editProfileUserInfo,
+  updateProfileUserAvatar,
 } = require('../controllers/users');
 
-// Находит всех пользователей:
+// Пользователи:
 router.get('/', getUsers);
-// Находит пользователя по _id:
+// Конкретный пользователь по его ID:
 router.get('/:userId', getUserId);
-// Cоздаёт пользователя:
+// Создание пользователя:
 router.post('/', createUser);
-// Обновление аватара:
-router.patch('/me', updateUserProfile);
-// Обновление аватара:
-router.patch('/me/avatar', updateUserAvatar);
+// Редактирование данных пользователя:
+router.patch('/me', editProfileUserInfo);
+// Редактирование аватара пользователя:
+router.patch('/me/avatar', updateProfileUserAvatar);
 
 module.exports = router;

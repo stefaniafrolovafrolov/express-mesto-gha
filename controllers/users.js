@@ -1,13 +1,13 @@
 const User = require('../models/user');
 
-// Находим всех пользователей:
+// Пользователи:
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send(users))
     .catch(() => res.status(500).send({ message: 'Ошибка по умолчанию' }));
 };
 
-// Находим пользователя по ID:
+// Конкретный пользователь по его ID:
 module.exports.getUserId = (req, res) => {
   User
     .findById(req.params.userId)
@@ -34,7 +34,7 @@ module.exports.getUserId = (req, res) => {
     });
 };
 
-// Создаем пользователя:
+// Создание пользователя:
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
@@ -50,15 +50,14 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-// Обновление данных пользователя:
-module.exports.updateUserProfile = (req, res) => {
+// Редактирование данных пользователя:
+module.exports.editProfileUserInfo = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
     { new: true, runValidators: true },
-  )
-    .then((user) => res.status(200).send(user))
+  ).orFail().then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         return res
@@ -80,8 +79,8 @@ module.exports.updateUserProfile = (req, res) => {
     });
 };
 
-// Обновление аватара пользователя:
-module.exports.updateUserAvatar = (req, res) => {
+// Редактирование аватара пользователя:
+module.exports.updateProfileUserAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
     .then((user) => res.status(200).send(user))
