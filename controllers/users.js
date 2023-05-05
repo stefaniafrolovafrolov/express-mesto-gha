@@ -83,7 +83,7 @@ module.exports.editProfileUserInfo = (req, res) => {
 module.exports.updateProfileUserAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-    .then((user) => res.status(200).send(user))
+    .orFail().then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         return res
