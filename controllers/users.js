@@ -84,7 +84,7 @@ function getUserId(req, res, next) {
 
   User
     .findById(id)
-    .orFail()
+
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -165,7 +165,7 @@ function updateProfileUserAvatar(req, res, next) {
         new: true,
         runValidators: true,
       },
-    ).orFail()
+    )
     .then((user) => {
       if (user) return res.send({ user });
 

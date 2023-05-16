@@ -69,7 +69,7 @@ function addLike(req, res, next) {
       {
         new: true,
       },
-    ).orFail()
+    )
     .then((card) => {
       if (card) return res.send({ data: card });
 
@@ -100,7 +100,7 @@ function removeLike(req, res, next) {
       {
         new: true,
       },
-    ).orFail()
+    )
     .then((card) => {
       if (card) return res.send({ data: card });
 
