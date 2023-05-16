@@ -1,15 +1,15 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 
 const { SECRET_SIGNING_KEY } = require('../utils/constants');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
-
+const User = require('../models/user');
 const InaccurateDataError = require('../errors/InaccurateDataError');
 
-function registerUser(req, res, next) {
+// регистрация пользователя
+function registrationUser(req, res, next) {
   const {
     email,
     password,
@@ -48,6 +48,7 @@ function registerUser(req, res, next) {
     });
 }
 
+// логин пользователя
 function loginUser(req, res, next) {
   const { email, password } = req.body;
 
@@ -69,18 +70,21 @@ function loginUser(req, res, next) {
     .catch(next);
 }
 
-function getUsersInfo(_, res, next) {
+// пользователи:
+function getUsers(_, res, next) {
   User
     .find({})
     .then((users) => res.send({ users }))
     .catch(next);
 }
 
-function getUserInfo(req, res, next) {
+// конкретный пользователь по его ID:
+function getUserId(req, res, next) {
   const { id } = req.params;
 
   User
     .findById(id)
+    .orFail()
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -95,6 +99,7 @@ function getUserInfo(req, res, next) {
     });
 }
 
+// поиск пользователя:
 function getCurrentUserInfo(req, res, next) {
   const { userId } = req.user;
 
@@ -114,7 +119,8 @@ function getCurrentUserInfo(req, res, next) {
     });
 }
 
-function setUserInfo(req, res, next) {
+// редактирование данных пользователя
+function editProfileUserInfo(req, res, next) {
   const { name, about } = req.body;
   const { userId } = req.user;
 
@@ -137,14 +143,15 @@ function setUserInfo(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new InaccurateDataError('Переданы некорректные данные при обновлении профиля пользователя'));
+        next(new InaccurateDataError('Переданы некорректные данные при обновлении профиля'));
       } else {
         next(err);
       }
     });
 }
 
-function setUserAvatar(req, res, next) {
+// Редактирование аватара пользователя:
+function updateProfileUserAvatar(req, res, next) {
   const { avatar } = req.body;
   const { userId } = req.user;
 
@@ -158,7 +165,7 @@ function setUserAvatar(req, res, next) {
         new: true,
         runValidators: true,
       },
-    )
+    ).orFail()
     .then((user) => {
       if (user) return res.send({ user });
 
@@ -174,13 +181,11 @@ function setUserAvatar(req, res, next) {
 }
 
 module.exports = {
-  registerUser,
+  registrationUser,
   loginUser,
-
-  getUsersInfo,
-  getUserInfo,
+  getUsers,
+  getUserId,
   getCurrentUserInfo,
-
-  setUserInfo,
-  setUserAvatar,
+  editProfileUserInfo,
+  updateProfileUserAvatar,
 };

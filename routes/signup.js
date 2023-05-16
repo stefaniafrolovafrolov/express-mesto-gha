@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
 const { URL_REGEX } = require('../utils/constants');
-const { registerUser } = require('../controllers/users');
+const { registrationUser } = require('../controllers/users');
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -14,6 +14,6 @@ router.post('/signup', celebrate({
       .string()
       .pattern(URL_REGEX),
   }),
-}), registerUser);
+}), registrationUser);
 
 module.exports = router;
