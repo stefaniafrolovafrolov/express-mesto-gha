@@ -1,22 +1,38 @@
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
+const { URL_REGEX } = require('../utils/constants');
 const {
-  getUsers,
-  getUserId,
-  createUser,
-  editProfileUserInfo,
-  updateProfileUserAvatar,
+  getUsersInfo,
+  getUserInfo,
+  getCurrentUserInfo,
+
+  setUserInfo,
+  setUserAvatar,
 } = require('../controllers/users');
 
-// Пользователи:
-router.get('/', getUsers);
-// Конкретный пользователь по его ID:
-router.get('/:userId', getUserId);
-// Создание пользователя:
-router.post('/', createUser);
-// Редактирование данных пользователя:
-router.patch('/me', editProfileUserInfo);
-// Редактирование аватара пользователя:
-router.patch('/me/avatar', updateProfileUserAvatar);
+router.get('/', getUsersInfo);
+router.get('/me', getCurrentUserInfo);
+
+router.get('/:id', celebrate({
+  params: Joi.object().keys({
+    id: Joi.string().length(24).hex().required(),
+  }),
+}), getUserInfo);
+
+router.patch('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+}), setUserInfo);
+
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi
+      .string()
+      .pattern(URL_REGEX),
+  }),
+}), setUserAvatar);
 
 module.exports = router;
