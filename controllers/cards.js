@@ -36,26 +36,21 @@ function removeCard(req, res, next) {
   const { userId } = req.user;
 
   Card
-    .findById(cardId)
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка не найдена');
-      }
-      if (card.owner.toString() !== userId) {
-        throw new ForbiddenError('Вы не можете удалить чужую карточку');
-      }
-      return card.remove();
+    .findById({
+      _id: cardId,
     })
     .then((card) => {
-      res.send({ data: card });
+      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+
+      const { owner: cardOwnerId } = card;
+      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
+
+      card
+        .remove()
+        .then(() => res.send({ data: card }))
+        .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new InaccurateDataError('Передан некорректный id карточки'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 }
 
 // Лайк на карточки:
