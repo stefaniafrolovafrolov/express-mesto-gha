@@ -47,7 +47,7 @@ function removeCard(req, res, next) {
       if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
 
       card
-        .remove()
+
         .then(() => res.send({ data: card }))
         .catch(next);
     })
