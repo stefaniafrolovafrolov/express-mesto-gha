@@ -16,6 +16,8 @@
 
 ## 2. Стек технологий
 
+![Image alt](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1548.png)
+
 - EXPRESS.JS
 
 - POSTMAN
