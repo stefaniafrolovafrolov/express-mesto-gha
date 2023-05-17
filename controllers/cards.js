@@ -43,13 +43,15 @@ function removeCard(req, res, next) {
     })
     .then((card) => {
       if (!card) {
-        throw new ForbiddenError('Данные по указанному id не найдены');
+        throw new NotFoundError('Карточка не найдена');
       }
       res.send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'NotFoundError') {
-        next(new NotFoundError('Данные по указанному id не найдены'));
+      if (err.name === 'CastError') {
+        next(new InaccurateDataError('Неверный формат id карточки'));
+      } else if (err.name === 'ForbiddenError') {
+        next(new ForbiddenError('У вас нет прав на удаление этой карточки'));
       } else {
         next(err);
       }
