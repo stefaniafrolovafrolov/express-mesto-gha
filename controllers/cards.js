@@ -31,7 +31,7 @@ function addNewCard(req, res, next) {
 }
 
 // Удаление карточки:
-function removeCard(req, res, next) {
+function deleteCard(req, res, next) {
   const { id: cardId } = req.params;
   const { userId } = req.user;
 
@@ -40,17 +40,24 @@ function removeCard(req, res, next) {
       _id: cardId,
     })
     .then((card) => {
-      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+      if (!card) {
+        throw new NotFoundError('Данные по указанному id не найдены');
+      }
 
       const { owner: cardOwnerId } = card;
-      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
 
-      return card.remove();
+      if (cardOwnerId.valueOf() !== userId) {
+        throw new ForbiddenError('Нет прав доступа');
+      }
+
+      return Card.findByIdAndDelete(cardId);
     })
-    .then((card) => {
-      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+    .then((deletedCard) => {
+      if (!deletedCard) {
+        throw new NotFoundError('Карточка уже была удалена');
+      }
 
-      res.send({ data: card });
+      res.send({ data: deletedCard });
     })
     .catch(next);
 }
@@ -122,5 +129,5 @@ module.exports = {
   addNewCard,
   addLike,
   removeLike,
-  removeCard,
+  deleteCard,
 };

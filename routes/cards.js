@@ -7,7 +7,7 @@ const {
   addNewCard,
   addLike,
   removeLike,
-  removeCard,
+  deleteCard,
 } = require('../controllers/cards');
 
 router.post('/', celebrate({
@@ -37,6 +37,6 @@ router.delete('/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().length(24).hex().required(),
   }),
-}), removeCard);
+}), deleteCard);
 
 module.exports = router;
