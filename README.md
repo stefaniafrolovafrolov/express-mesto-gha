@@ -1,7 +1,7 @@
 [![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
 # Учебный backend-проект: "Место"
 
-![Скриншот кода из студии vscode](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot-1545.png)
+![Скриншот кода из студии vscode](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1550.png)
 
 ## 1. Описание проекта
 
