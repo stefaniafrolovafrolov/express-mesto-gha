@@ -60,6 +60,8 @@
 
 ## 6. Статус проекта
 
+![Скрин MONGODB](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1549.png)
+
 - Проект завершен
 
 ## Cсылка на проект 
