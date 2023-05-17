@@ -45,10 +45,12 @@ function removeCard(req, res, next) {
       const { owner: cardOwnerId } = card;
       if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
 
-      card
-        .remove()
-        .then(() => res.send({ data: card }))
-        .catch(next);
+      return card.remove();
+    })
+    .then((card) => {
+      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+
+      res.send({ data: card });
     })
     .catch(next);
 }
