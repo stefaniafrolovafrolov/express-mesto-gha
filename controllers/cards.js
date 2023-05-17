@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongoose');
 const Card = require('../models/card');
 
 const ForbiddenError = require('../errors/ForbiddenError');
@@ -37,29 +36,20 @@ function removeCard(req, res, next) {
   const { id: cardId } = req.params;
   const { userId } = req.user;
 
-  if (!ObjectId.isValid(cardId)) {
-    throw new InaccurateDataError('Некорректный id');
-  }
-
-  Card.findById(cardId)
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Данные по указанному id не найдены');
-      }
-
-      const { owner: cardOwnerId } = card;
-      if (cardOwnerId.toString() !== userId) {
-        throw new ForbiddenError('Нет прав доступа');
-      }
-
-      return Card.findByIdAndRemove(card._id);
+  Card
+    .findByIdAndRemove({
+      _id: cardId,
     })
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Данные по указанному id не найдены');
-      }
+      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
 
-      res.send({ data: card });
+      const { owner: cardOwnerId } = card;
+      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
+
+      card
+        .remove()
+        .then(() => res.send({ data: card }))
+        .catch(next);
     })
     .catch(next);
 }
