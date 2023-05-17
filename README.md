@@ -1,5 +1,6 @@
 [![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
-# Учебный backend-проект: "Место"
+                    # Учебный backend-проект: "Место"
+![Скриншот кода из студии vscode](https://github.com/https://ibb.co/RhhqFRd
 
 ## 1. Описание проекта
 
