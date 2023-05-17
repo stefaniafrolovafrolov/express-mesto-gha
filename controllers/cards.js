@@ -39,19 +39,21 @@ function removeCard(req, res, next) {
   Card
     .findByIdAndRemove({
       _id: cardId,
+      owner: userId,
     })
     .then((card) => {
-      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
-
-      const { owner: cardOwnerId } = card;
-      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
-
-      card
-
-        .then(() => res.send({ data: card }))
-        .catch(next);
+      if (!card) {
+        throw new ForbiddenError('Данные по указанному id не найдены');
+      }
+      res.send({ data: card });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'NotFoundError') {
+        next(new NotFoundError('Данные по указанному id не найдены'));
+      } else {
+        next(err);
+      }
+    });
 }
 
 // Лайк на карточки:
