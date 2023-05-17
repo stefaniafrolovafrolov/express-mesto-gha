@@ -32,29 +32,34 @@ function addNewCard(req, res, next) {
 }
 
 // Удаление карточки:
+
 function removeCard(req, res, next) {
   const { id: cardId } = req.params;
   const { userId } = req.user;
 
-  // Проверяем корректность id
   if (!ObjectId.isValid(cardId)) {
     throw new InaccurateDataError('Некорректный id');
   }
 
-  Card
-    .findByIdAndRemove({
-      _id: cardId,
-    })
+  Card.findById(cardId)
     .then((card) => {
-      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+      if (!card) {
+        throw new NotFoundError('Данные по указанному id не найдены');
+      }
 
       const { owner: cardOwnerId } = card;
-      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
+      if (cardOwnerId.toString() !== userId) {
+        throw new ForbiddenError('Нет прав доступа');
+      }
 
-      card
-        .remove()
-        .then(() => res.send({ data: card }))
-        .catch(next);
+      return Card.findByIdAndRemove(card._id);
+    })
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Данные по указанному id не найдены');
+      }
+
+      res.send({ data: card });
     })
     .catch(next);
 }
