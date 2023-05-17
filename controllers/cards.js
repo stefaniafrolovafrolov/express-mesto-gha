@@ -35,20 +35,19 @@ function removeCard(req, res, next) {
   const { id: cardId } = req.params;
   const { userId } = req.user;
 
-  Card
-    .findByIdAndRemove({
-      _id: cardId,
-    })
+  Card.findById(cardId)
     .then((card) => {
-      if (!card) throw new NotFoundError('Данные по указанному id не найдены');
+      if (!card) throw new NotFoundError('Карточка не найдена');
 
       const { owner: cardOwnerId } = card;
-      if (cardOwnerId.valueOf() !== userId) throw new ForbiddenError('Нет прав доступа');
+      if (cardOwnerId.toString() !== userId) {
+        throw new ForbiddenError('Нет прав доступа');
+      }
 
-      card
-        .remove()
-        .then(() => res.send({ data: card }))
-        .catch(next);
+      return card.remove();
+    })
+    .then((removedCard) => {
+      res.send({ data: removedCard });
     })
     .catch(next);
 }
