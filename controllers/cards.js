@@ -31,27 +31,27 @@ function addNewCard(req, res, next) {
 }
 
 // Удаление карточки:
-
 function removeCard(req, res, next) {
   const { id: cardId } = req.params;
   const { userId } = req.user;
 
   Card
-    .findByIdAndRemove({
-      _id: cardId,
-      owner: userId,
-    })
+    .findById(cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       }
+      if (card.owner.toString() !== userId) {
+        throw new ForbiddenError('Вы не можете удалить чужую карточку');
+      }
+      return card.remove();
+    })
+    .then((card) => {
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new InaccurateDataError('Неверный формат id карточки'));
-      } else if (err.name === 'ForbiddenError') {
-        next(new ForbiddenError('У вас нет прав на удаление этой карточки'));
+        next(new InaccurateDataError('Передан некорректный id карточки'));
       } else {
         next(err);
       }
