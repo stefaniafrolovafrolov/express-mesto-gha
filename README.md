@@ -1,6 +1,8 @@
 [![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
 # Учебный backend-проект: "Место"
 
+![Скриншот кода из студии vscode](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1550.png)
+
 ## 1. Описание проекта
 
 - Данная проектная работа выполнена в рамках образовательной программы Яндекс Практикума. Проект представляет собой написание серверной логики для последующего объединения с частью frontendа, сделанной на библиотеке "React"
@@ -13,6 +15,8 @@
 
 
 ## 2. Стек технологий
+
+![Image alt](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1548.png)
 
 - EXPRESS.JS
 
@@ -31,6 +35,8 @@
 3. npm run dev - запустить сервер в режиме разработчика с hot-reload (в браузере ввести ссылку http://localhost:3000/, где 3000 - рабочий порт)
 
 ## 4. Процесс создания
+
+![Image alt](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1551.png)
 
 1. Написание схем, контроллеров и моделей (users & cards), подключение запросов с методами api (см. ниже), добавление кодов и текстов ошибок при неуспешных запросах (400, 404, 500)
 
@@ -55,6 +61,8 @@
 - Удаление карточки
 
 ## 6. Статус проекта
+
+![Скрин MONGODB](https://github.com/stefaniafrolovafrolov/express-mesto-gha/blob/main/Screenshot_1549.png)
 
 - Проект завершен
 
