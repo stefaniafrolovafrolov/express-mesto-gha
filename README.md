@@ -30,7 +30,7 @@
 
 1. git clone https://stefaniafrolovafrolov.github.io/express-mesto-gha - клонировать репозиторий (с использованием HTTPS) на свое устройство
 
-2. npm i - установить зависимости
+2. npm i - установить все зависимости
 
 3. npm run dev - запустить сервер в режиме разработчика с hot-reload (в браузере ввести ссылку http://localhost:3000/, где 3000 - рабочий порт)
 
